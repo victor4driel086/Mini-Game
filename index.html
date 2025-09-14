@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mini Game</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Olá, meu bem 💙</h1>
+      <p class="subtitle">clique em jogar</p>
+    </header>
+
+    <section class="slot-machine" aria-label="Máquina caça-níquel">
+      <div class="reels">
+        <div class="reel" id="reel1">⚠️</div>
+        <div class="reel" id="reel2">⚠️</div>
+        <div class="reel" id="reel3">⚠️</div>
+      </div>
+
+      <div class="controls">
+        <button id="playBtn" class="btn neon-btn">Jogar</button>
+        <button id="resetBtn" class="btn small muted">Redefinir</button>
+      </div>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </section>
+
+    <footer class="footer">
+      <center><small>Obtenha três emojis iguais para vencer</small></center>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

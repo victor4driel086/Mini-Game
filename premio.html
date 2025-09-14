@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seu prêmio</title>
+<style>
+:root {
+  --bg:#071023;
+  --neon-pink:#ff4ecf;
+  --neon-cyan:#00f0ff;
+  --neon-purple:#8f5cff;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(143,92,255,0.06), transparent),
+              radial-gradient(900px 500px at 90% 90%, rgba(0,240,255,0.03), transparent),
+              var(--bg);
+  color:#fff;
+  text-align:center;
+  padding:22px;
+  overflow:hidden;
+}
+
+/* Envelope branco */
+.envelope-container {
+  position: relative;
+  width: 280px;
+  height: 180px;
+  cursor: pointer;
+  perspective: 800px;
+  transition: transform 1s ease, z-index 0s linear 1s; /* z-index delay para não cobrir papel */
+  z-index:1; /* inicialmente abaixo do papel */
+}
+
+.envelope-container.open {
+  transform: translateY(280px) scale(0.8) rotateX(10deg); /* recua e inclina */
+  z-index:0; /* depois de 1s, vai para trás do papel */
+}
+
+.envelope-base {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background:#d9d9d9;
+  border-radius:12px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.envelope-flap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background:#fff;
+  /* Triângulo bem pontudo, ponta lá embaixo */
+  clip-path: polygon(100% 0, 50% 80%, 0% 0);
+  border-radius: 12px; /* controla o arredondamento */
+  transform-origin: top;
+  transition: transform 1s ease;
+  z-index:2;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:280px;
+  color:var(--neon-pink);
+}
+
+.envelope-container.open .envelope-flap {
+  transform: rotateX(-120deg);
+}
+
+/* Papel card */
+.card {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, 60%) scale(0); /* começa abaixo do envelope */
+  opacity:0;
+  background: rgba(255,255,255,0.02);
+  padding:32px 22px;
+  border-radius:20px;
+  max-width:500px;
+  width:100%;
+  border:1px solid rgba(255,255,255,0.04);
+  box-shadow:0 10px 40px rgba(0,0,0,0.6);
+  text-align:center;
+  transition: all 1s ease;
+  z-index:2; /* sempre acima do envelope */
+}
+
+.card.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity:1;
+  animation: paperSwing 1s ease forwards;
+}
+
+
+/* balanço leve da folha */
+@keyframes paperSwing {
+  -50% { transform: translate(0%, 50%) rotate(-5deg) scale(0.9); opacity:0; }
+  -50% { transform: translate(0%, 50%) rotate(5deg) scale(1.02); opacity:1; }
+
+}
+
+/* Elementos internos do card */
+h1 {
+  font-size:20px;
+  margin:0 0 14px;
+  background: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 10px rgba(0,240,255,0.4);
+}
+
+p {
+  font-size:17px;
+  line-height:1.6;
+  margin:0 0 22px;
+  color:rgba(255,255,255,0.85);
+}
+
+/* Conteúdo rolável dentro do papel */
+.card-content {
+  max-height: 300px;   /* altura máxima visível */
+  overflow-y: auto;    /* ativa scroll vertical */
+  padding-right: 8px;  /* espaço pro scroll não colar no texto */
+  text-align: left;    /* texto alinhado à esquerda */
+}
+
+.heart {
+  font-size:25px;
+  animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.2);opacity:.8}
+}
+
+.btn {
+  background: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  color:#071023;
+  box-shadow:0 6px 24px rgba(0,0,0,0.5);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+
+.btn:active {
+  transform:scale(.97);
+  box-shadow:0 3px 12px rgba(0,0,0,0.6);
+}
+
+/* Partículas de coração */
+.particle {
+  position:absolute;
+  font-size:14px;
+  opacity:0.9;
+  pointer-events:none;
+  animation: floatUp 2.5s linear forwards;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0px) scale(1) rotate(0deg); opacity:1; }
+  50% { transform: translateY(-80px) rotate(20deg) scale(1.2); }
+  100% { transform: translateY(-200px) rotate(-20deg) scale(0.8); opacity:0; }
+}
+</style>
+</head>
+<body>
+
+<div class="envelope-container" id="envelope">
+  <div class="envelope-base"></div>
+  <div class="envelope-flap">✉️</div>
+</div>
+
+
+<div class="card" id="card">
+  <h1>Parabéns, você ganhou meu coração</h1>
+<div class="heart">❤️</div>
+  
+  
+  <div class="card-content">
+   <p>
+      Querida Vitória,
+      <p>Então já fazem <strong><span style="color:#00f0ff;">seis meses</span></strong>…
+      seis meses de algo que achei que nunca iria acontecer; seis meses de muitos momentos inesquecíveis; <strong><span style="color:#00f0ff;">seis meses de você!</span></strong>
+      <p>Pude ver, nesse período, boa parte da sua luta: as provações, os estresses, mas, principalmente, a sua força e a forma como você persiste e enfrenta seus problemas… eu admiro muito isso em você.
+
+      <p>Vi você se tornando, a cada dia, uma pessoa muito especial na minha vida: que me ajuda, que me ouve e que demonstra se sentir de alguma forma segura comigo. Vi você ganhando um lugar muito especial no meu coração, e um carinho muito grande por você surgindo em mim.
+
+      <p>Agradeço a Deus por ter me apresentado <strong><span style="color:#00f0ff;">alguém tão especial</span></strong>; agradeço a Ele por esses seis meses e oro para que você permaneça em minha vida.
+      Agradeço também por cada conselho, por cada momento em que me ouviu, por me fazer rir e por me fazer sentir especial; por demonstrar confiança em mim, seja me contando um segredo, seja relatando as dificuldades do dia a dia, seja permitindo que eu esteja com você em um momento de fragilidade. Isso, para mim não tem preço. Obrigado mesmo!
+
+      <p>Meu desejo é estar com você, mesmo com essa distância. Quero que saiba que <strong><span style="color:#00f0ff;">você nunca está sozinha</span></strong>: tem alguém que sente muito orgulho de você e que quer muito ver você realizando seus sonhos e vencendo todos os obstáculos, e pode ter certeza de que eu sou esse alguém.
+
+      <p>Enfim, Vitória… pode contar comigo sempre. Nos momentos ruins eu seguro a sua mão; nos bons, eu me alegro juntamente com você.
+
+      Espero que tenha gostado deste “prêmio”: é simples, mas tem muito sentimento envolvido.
+      <strong><span style="color:#00f0ff;">Eu te amo, Vitória!</span></strong>
+
+      <p>Com carinho,
+      Victor Adriel
+    </p>
+  </div>
+
+  <button class="btn" onclick="window.location.href='index.html'">Voltar ao jogo</button>
+</div>
+
+<script>
+const envelope = document.getElementById('envelope');
+const card = document.getElementById('card');
+
+function createParticle() {
+  const p = document.createElement('div');
+  p.classList.add('particle');
+  const emojis = ['💖','✨','🌟','💌','💙'];
+  p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+  p.style.left = Math.random() * 100 + '%';
+  p.style.fontSize = (12 + Math.random()*14) + 'px';
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 2500);
+}
+
+envelope.addEventListener('click', () => {
+  envelope.classList.add('open');
+
+  // delay para mostrar o papel depois que o envelope recua
+  setTimeout(() => {
+    card.classList.add('show');
+  }, 700);
+
+  // partículas
+  const interval = setInterval(createParticle, 200);
+  setTimeout(()=> clearInterval(interval), 4000);
+}, { once:true });
+</script>
+
+</body>
+</html>
