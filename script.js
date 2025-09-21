@@ -10,7 +10,7 @@ const reels = [
   document.getElementById("reel3"),
 ];
 
-const symbols = ["❌","💙","💎","⭐","⚠️","🍀","🔆","🌟"]; // neutro e romântico
+const symbols = ["❌","💙","💎","⭐","⚠️","🍀","💌","🌟"]; // neutro e romântico
 const ATTEMPTS_KEY = "slotAttempts";
 
 /* Helper: get attempts from localStorage */
@@ -101,7 +101,7 @@ function onClickPlay(){
   // spin visuals: choose finals based on willWin
   if (willWin){
     // matching symbols for win
-    const sym = "💙";
+    const sym = "💌";
     spinReels([sym, sym, sym]);
     // small delay to match animation
     setTimeout(()=> {
